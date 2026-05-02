@@ -3,6 +3,7 @@
 import { useState } from "react";
 import BoardColumn from "@components/board/BoardColumn";
 import TaskCard from "@components/task/TaskCard";
+import TaskModal from "@components/task/TaskModal";
 
 const COLUMNS = ["Plan", "Do", "WIP", "Done"];
 
@@ -70,17 +71,7 @@ export default function BoardView() {
         ))}
       </div>
       {selectedTask && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl w-full max-w-md mx-4 p-6">
-            <p className="text-base font-medium mb-4">{selectedTask.title}</p>
-            <button
-              onClick={() => setSelectedTask(null)}
-              className="text-sm text-gray-400 hover:text-gray-600"
-            >
-              閉じる
-            </button>
-          </div>
-        </div>
+        <TaskModal task={selectedTask} onClose={() => setSelectedTask(null)} />
       )}
     </>
   );
