@@ -5,6 +5,7 @@ type Props = {
   priority: Priority;
   dueDate: string;
   tags: string[];
+  onClick?: () => void;
 };
 
 const priorityStyle: Record<Priority, string> = {
@@ -13,9 +14,18 @@ const priorityStyle: Record<Priority, string> = {
   低: "bg-green-50 text-green-700",
 };
 
-export default function TaskCard({ title, priority, dueDate, tags }: Props) {
+export default function TaskCard({
+  title,
+  priority,
+  dueDate,
+  tags,
+  onClick,
+}: Props) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-3 mb-2 cursor-pointer hover:border-gray-300 transition-colors">
+    <div
+      className="bg-white border border-gray-200 rounded-lg p-3 mb-2 cursor-pointer hover:border-gray-300 transition-colors"
+      onClick={onClick}
+    >
       <p className="text-sm font-medium text-gray-900 mb-2">{title}</p>
       <div className="flex flex-wrap gap-1 mb-2">
         {tags.map((tag) => (
