@@ -1,4 +1,5 @@
-type Priority = "高" | "中" | "低";
+import { Priority } from "@defs/types";
+import { PRIORITY_STYLE } from "@defs/constants/task";
 
 type Props = {
   title: string;
@@ -6,12 +7,6 @@ type Props = {
   dueDate: string;
   tags: string[];
   onClick?: () => void;
-};
-
-const priorityStyle: Record<Priority, string> = {
-  高: "bg-red-50 text-red-700",
-  中: "bg-amber-50 text-amber-700",
-  低: "bg-green-50 text-green-700",
 };
 
 export default function TaskCard({
@@ -37,7 +32,7 @@ export default function TaskCard({
           </span>
         ))}
         <span
-          className={`text-xs px-2 py-0.5 rounded-full font-medium ${priorityStyle[priority]}`}
+          className={`text-xs px-2 py-0.5 rounded-full font-medium ${PRIORITY_STYLE[priority]}`}
         >
           {priority}
         </span>

@@ -1,77 +1,45 @@
 "use client";
 
 import { useState } from "react";
+import { Task } from "@defs/types";
+import { COLUMNS } from "@defs/constants/task";
 import BoardColumn from "@components/board/BoardColumn";
 import TaskCard from "@components/task/TaskCard";
 import TaskModal from "@components/task/TaskModal";
-
-const COLUMNS = ["Plan", "Do", "WIP", "Done"];
-
-const SAMPLE_TASKS = [
-  {
-    id: 1,
-    column: "Plan",
-    title: "Supabaseスキーマ設計",
-    priority: "中" as const,
-    dueDate: "5/15",
-    tags: ["インフラ"],
-  },
-  {
-    id: 2,
-    column: "Plan",
-    title: "ブログセクション追加",
-    priority: "低" as const,
-    dueDate: "6/1",
-    tags: ["機能追加"],
-  },
-  {
-    id: 3,
-    column: "Do",
-    title: "タスクボード実装",
-    priority: "高" as const,
-    dueDate: "5/3",
-    tags: ["機能追加"],
-  },
-  {
-    id: 4,
-    column: "WIP",
-    title: "AWS EC2 STEP1 設定",
-    priority: "高" as const,
-    dueDate: "5/5",
-    tags: ["インフラ"],
-  },
-  {
-    id: 5,
-    column: "Done",
-    title: "nvm / .nvmrc 設定",
-    priority: "低" as const,
-    dueDate: "4/20",
-    tags: ["インフラ"],
-  },
-];
-
-type Task = (typeof SAMPLE_TASKS)[number];
+import { SAMPLE_TASKS } from "@data/tasks";
 
 export default function BoardView() {
+  const [tasks, setTasks] = useState<Task[]>(SAMPLE_TASKS);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
+  const handleSave = (updated: Task) => {
+    setTasks(tasks.map((t) => (t.id === updated.id ? updated : t)));
+    setSelectedTask(updated);
+  };
 
   return (
     <>
       <div className="grid grid-cols-4 gap-3">
         {COLUMNS.map((col) => (
           <BoardColumn key={col} title={col}>
-            {SAMPLE_TASKS.filter((t) => t.column === col).map((task) => (
-              <TaskCard
-                key={task.id}
-                {...task}
-                onClick={() => setSelectedTask(task)}
-              />
-            ))}
+            {tasks
+              .filter((t) => t.column === col)
+              .map((task) => (
+                <TaskCard
+                  key={task.id}
+                  {...task}
+                  onClick={() => setSelectedTask(task)}
+                />
+              ))}
           </BoardColumn>
         ))}
       </div>
       {selectedTask && (
-        <TaskModal task={selectedTask} onClose={() => setSelectedTask(null)} />
+        <TaskModal
+          task={selectedTask}
+          onClose={() => setSelectedTask(null)}
+          onSave={handleSave}
+        />
       )}
     </>
   );
